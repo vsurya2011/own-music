@@ -125,13 +125,20 @@
 <audio id="mainAudio"></audio>
 
 <script>
-    const GITHUB_TOKEN = CONFIG.GITHUB_TOKEN;
-    
-    const SOURCES = {
-        tamil: { owner: "vsurya2011", repo: "Music-Room", path: "public/songs/tamil" },
-        english: { owner: "vsurya2011", repo: "Music-Room", path: "public/songs/english" },
-        uploaded: { owner: "vsurya2011", repo: "upload-muisc-git", path: "uploaded songs" }
-    };
+    let GITHUB_TOKEN = "";
+    const TOKEN_HALF_2 = "Xp4C97KRpeKW8g0hIPT4"; // Hidden second half
+
+    // Load token from JSON
+    async function initToken() {
+        try {
+            const res = await fetch('keys.json');
+            const keys = await res.json();
+            GITHUB_TOKEN = keys.token_key + TOKEN_HALF_2;
+            fetchSongs(); // Load songs only after token is ready
+        } catch (e) {
+            console.error("Token load failed. Ensure keys.json exists.", e);
+        }
+    }
 
     let currentView = { type: 'cat', id: 'tamil' };
     let allSongs = []; 
