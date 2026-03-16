@@ -125,20 +125,23 @@
 <audio id="mainAudio"></audio>
 
 <script>
-    let GITHUB_TOKEN = "";
-    const TOKEN_HALF_2 = "p4C97KRpeKW8g0hIPT4"; // Hidden second half
+    // Example: If your token is 40 characters
+// Put the first 20 in keys.json and the last 20 here.
+const TOKEN_HALF_2 = "dHzTLwzV2UwHg5B4WN8wp; 
 
-    // Load token from JSON
-    async function initToken() {
-        try {
-            const res = await fetch('keys.json');
-            const keys = await res.json();
-            GITHUB_TOKEN = keys.token_key + TOKEN_HALF_2;
-            fetchSongs(); // Load songs only after token is ready
-        } catch (e) {
-            console.error("Token load failed. Ensure keys.json exists.", e);
-        }
+async function initToken() {
+    try {
+        // This line attempts to read your uploaded keys.json
+        const res = await fetch('keys.json');
+        if (!res.ok) throw new Error("File not found");
+        const keys = await res.json();
+        GITHUB_TOKEN = keys.token_key + TOKEN_HALF_2;
+        fetchSongs(); 
+    } catch (e) {
+        console.error("Token load failed. Ensure keys.json is uploaded to GitHub.", e);
+        alert("Credential Error: Please check if keys.json is in your repository.");
     }
+}
 
     let currentView = { type: 'cat', id: 'tamil' };
     let allSongs = []; 
